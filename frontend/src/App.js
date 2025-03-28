@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React, { useState } from "react";
+import Sidebar from "./Sidebar";
+import Header from "./Header";
+import VideoPlayer from "./VideoPlayer";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import './Styles/App.css';
 function App() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React. This is also a test!!!
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <div className="sidebar">
+          <Sidebar />
+        </div>
+        <div className="main">
+          <div className="header">
+          <Header />
+          </div>
+          <div className="content">
+            <VideoPlayer />
+            {/* <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/course-catalog" element={<CourseCatalog />} />
+              <Route path="/graduation" element={<GraduationChecker />} />
+            </Routes> */}
+          </div>
+        </div>
+      </div>
+    </Router>
   );
 }
 
