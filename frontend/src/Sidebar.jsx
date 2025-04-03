@@ -3,7 +3,7 @@ import { FaHome, FaBook, FaUser, FaComments, FaExchangeAlt, FaCog } from "react-
 import { HiAcademicCap } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import "./Styles/Sidebar.css";
-import Logo from '../src/Images/logo.png';
+import Logo from './Images/logo.png';
 
 function Sidebar() {
   return (
