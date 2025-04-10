@@ -1,7 +1,11 @@
 import express from 'express';
-import { Schema, model } from 'mongoose';
 import cors from 'cors';
-import { ConnectMongo } from './mongodb.js'
+import multer from 'multer';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { Schema, model } from 'mongoose';
+import { ConnectMongo } from './mongodb.js';
+import { dropboxUpload } from './dropboxUpload.js'
 
 const app = express();
 
@@ -15,14 +19,23 @@ ConnectMongo()
 //Schema for Uploading Videos
 const videoSchema = new Schema({
     title: String,
-    description: String,
-    videoPath: String,
+    mimetype: String,
+    streamingLink: String,
     videoId: String,
 });
 
 // Create a Mongoose model for the "Video" collection using the defined schema
 const Video = model('Video', videoSchema);
 
+// Setup multer to store files in memory
+const upload = multer({ storage: multer.memoryStorage() }); 
+
+// Handle __dirname in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static files from the React build
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
 //----------------------------------API REQUEST------------------------------------------------
 //----------------------POST-------------------------------
 
@@ -53,6 +66,44 @@ app.post('/upload-video', async (req, res) => {
     catch (error) {
         return res.status(500).json({ message: 'Error saving video', error });
     }
+});
+
+// Endpoint to save video details
+app.post('/store-video', upload.single('file'), async (req, res) => {
+  const { fieldname, originalname, encoding, mimetype, buffer, size } = req.file
+  console.log(req.file, req.file.buffer)
+
+  const { status, videoId, message, error, streamingLink } = await dropboxUpload(originalname, buffer)
+  console.log(status, videoId, message, error, streamingLink)
+  if(status === 200){
+    try {
+      // Create a new video document using the Video model
+      const newVideo = new Video({
+          originalname,
+          mimetype,
+          streamingLink,
+          videoId,
+      });
+  
+      //If there are no errors save in database
+      await newVideo.save();
+      return res.status(201).json({ message: 'Video saved successfully', video: newVideo });
+    } 
+    catch (error) {
+        return res.status(500).json({ message: 'Error saving video', error });
+    }
+    //return res.status(results.status).json({ data: results.message, videoId: results.videoId });
+  }else{
+    return res.status(status).json({error: error})
+  }
+
+
+  // const { title, description, videoPath } = req.body;
+
+  // if (!title || !description || !videoPath) {
+  //     return res.status(400).json({ message: 'Missing required fields' });
+  // }
+
 });
 
 //----------------------GET-------------------------------

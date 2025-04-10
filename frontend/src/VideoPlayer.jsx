@@ -10,9 +10,9 @@ const YouTubePlayer = () => {
 
   // Make the GET request using axios
   useEffect(() => {
-    axios.get('http://localhost:8080/video/w4syb8cphz')
+    axios.get('http://localhost:8080/video/z0ysridtsbh')
       .then(response => {
-        setData(response.data.video.videoPath);
+        setData(response.data.video.streamingLink);
       })
       .catch(err => {
         console.err(err);

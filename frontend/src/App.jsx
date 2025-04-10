@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import VideoPlayer from "./VideoPlayer";
+import Upload_Button from "./Upload_Button";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import './Styles/App.css';
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Header />
           </div>
           <div className="content">
+            <Upload_Button />
             <VideoPlayer />
             {/* <Routes>
               <Route path="/" element={<Home />} />

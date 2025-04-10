@@ -4,6 +4,7 @@ services:
     build: .
     image: bwilfong122/video_app:latest
     environment:
-      - DB_PASSWORD=${DB_PASSWORD}  # Pull the DB_PASSWORD variable from the .env file
+      - DB_PASSWORD=${DB_PASSWORD} 
+      - DropBox_Access_Token=${DropBox_Access_Token}
     ports:
       - "80:80"

@@ -1,30 +1,31 @@
-# Step 1: Set up Node.js for backend and frontend
+# Step 1: Build React frontend
 FROM node:22-alpine AS build
 
-# Set up backend
+WORKDIR /app
+
+# Copy frontend and build
+COPY frontend/ ./frontend/
+RUN cd frontend && npm install && npm run build
+
+# Copy backend and install deps
+COPY backend/ ./backend/
+RUN cd backend && npm install
+
+# Step 2: Create final image
+FROM node:22-alpine
+
+WORKDIR /app
+
+# Copy backend
+COPY --from=build /app/backend ./backend
+
+# Copy frontend build into backend's public folder (or serve manually in server.js)
+COPY --from=build /app/frontend/dist ./frontend/dist
+
 WORKDIR /app/backend
-COPY backend/package*.json ./
-RUN npm install
-COPY backend/ .
-RUN npm install -g pm2
 
-# Set up frontend
-WORKDIR /app/frontend
-COPY frontend/package*.json ./
-RUN npm install
-COPY frontend/ .
-RUN npm run build
+# Expose your backend port (e.g. 8080 or 3000)
+EXPOSE 8080
 
-# Step 2: Set up Nginx
-FROM nginx:1.23-alpine
-RUN apk add --no-cache bash nodejs npm
-
-# Backend setup
-WORKDIR /app/backend
-COPY --from=build /app/backend /app/backend
-
-# Frontend setup
-WORKDIR /app/frontend
-COPY --from=build /app/frontend/dist /usr/share/nginx/html 
-
+# Start the server
 CMD ["node", "server.js"]
