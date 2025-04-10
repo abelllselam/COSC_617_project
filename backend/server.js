@@ -19,9 +19,18 @@ ConnectMongo()
 //Schema for Uploading Videos
 const videoSchema = new Schema({
     title: String,
+    description: String,
+    likes: Number,
+    dislikes: Number,
+    channelName: String,
     mimetype: String,
     streamingLink: String,
     videoId: String,
+    // image: {
+    //   url: String,
+    //   altText: String
+    // }
+
 });
 
 // Create a Mongoose model for the "Video" collection using the defined schema
@@ -41,8 +50,10 @@ app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
 // Endpoint to save video details
 app.post('/upload-video', async (req, res) => {
-    const { title, description, videoPath } = req.body;
-
+    const { title, description, videoPath, owner, url } = req.body;
+    const likes = 0;
+    const dislikes = 0;
+    const altText = title
     if (!title || !description || !videoPath) {
         return res.status(400).json({ message: 'Missing required fields' });
     }
@@ -53,10 +64,19 @@ app.post('/upload-video', async (req, res) => {
     try {
         // Create a new video document using the Video model
         const newVideo = new Video({
-            title,
-            description,
-            videoPath,
-            videoId,
+          title,
+          description,
+          videoPath,
+          likes,
+          dislikes,
+          owner,
+          mimetype,
+          streamingLink,
+          videoId,
+          image: {
+            url,
+            altText
+          }
         });
     
         //If there are no errors save in database
@@ -70,21 +90,32 @@ app.post('/upload-video', async (req, res) => {
 
 // Endpoint to save video details
 app.post('/store-video', upload.single('file'), async (req, res) => {
-  const { fieldname, originalname, encoding, mimetype, buffer, size } = req.file
-  console.log(req.file, req.file.buffer)
-
+  const {mimetype, buffer, originalname} = req.file
+  const contents = JSON.parse(req.body.contents)
+  const { title, description, channelName } = contents
+  const likes = 0;
+  const dislikes = 0;
+  console.log(req.file, req.file.buffer, originalname)
   const { status, videoId, message, error, streamingLink } = await dropboxUpload(originalname, buffer)
   console.log(status, videoId, message, error, streamingLink)
   if(status === 200){
     try {
       // Create a new video document using the Video model
       const newVideo = new Video({
-          originalname,
-          mimetype,
-          streamingLink,
-          videoId,
+        title,
+        description,
+        likes,
+        dislikes,
+        channelName,
+        mimetype,
+        streamingLink,
+        videoId,
+        // image: {
+        //   url,
+        //   altText
+        // }
       });
-  
+
       //If there are no errors save in database
       await newVideo.save();
       return res.status(201).json({ message: 'Video saved successfully', video: newVideo });
@@ -114,6 +145,23 @@ app.get('/video/:videoId', async (req, res) => {
   try {
     // Find the video by videoId
     const video = await Video.findOne({ videoId });
+
+    if (!video) {
+      return res.status(404).json({ message: 'Video not found' });
+    }
+
+    return res.status(200).json({ video });
+  } catch (error) {
+    return res.status(500).json({ message: 'Error fetching video', error });
+  }
+});
+
+// Fetch all the videos
+app.get('/video-all/', async (req, res) => {
+
+  try {
+    // Find the video by videoId
+    const video = await Video.find();
 
     if (!video) {
       return res.status(404).json({ message: 'Video not found' });

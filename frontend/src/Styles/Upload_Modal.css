@@ -1,0 +1,138 @@
+.containerDiv{
+    position: fixed;        
+    top: 50%;               
+    left: 50%;              
+    transform: translate(-50%, -50%);  
+    transition: opacity 0.9s ease-in-out;
+    border: 4px solid black;
+    background-color: #eeede8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;                     
+    z-index: 1050; 
+    border-radius: 15px;
+}
+
+.uploadDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    width: 30%
+}
+
+.uploadButton{
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.closeButton{
+    position: absolute;
+    top: 15px;               
+    left: 15px;      
+}       
+
+
+/* Upload_ModalDetails Page */
+
+/* General container styling */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f7f7f7;
+    width: 100%;
+  }
+  
+  /* Modal content container */
+  .modal-content {
+    display: flex;
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    width: 100%;
+  }
+  
+  /* Left side */
+  .left-side {
+    flex: 1;
+    padding-right: 30px;
+  }
+  
+  .heading {
+    font-weight: bold;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+  
+  .input-group {
+    margin-bottom: 20px;
+  }
+  
+  .input-label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+  
+  .channel-info {
+    margin-top: 20px;
+  }
+  
+  .channel-name {
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  
+  /* Right side */
+  .right-side {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .thumbnail {
+    max-width: 250px;
+    margin-bottom: 15px;
+  }
+  
+  .file-info {
+    font-weight: 600;
+  }
+  
+  .file-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+  
+  /* Upload button */
+  .upload-btn {
+    text-align: right;
+    margin-top: 20px;
+  }
+  
+  .upload-button {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .upload-button:hover {
+    background-color: #0056b3;
+  }

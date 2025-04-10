@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-import VideoPlayer from "./VideoPlayer";
-import Upload_Button from "./Upload_Button";
+import UploadPage from "./Upload/Upload_Page";
+import Home from "./Home";
+import Upload_Button from "./Upload/Upload_Button";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import './Styles/App.css';
 function App() {
@@ -19,7 +20,8 @@ function App() {
           </div>
           <div className="content">
             <Upload_Button />
-            <VideoPlayer />
+            <Home />
+            {/* <VideoPlayer /> */}
             {/* <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/course-catalog" element={<CourseCatalog />} />
