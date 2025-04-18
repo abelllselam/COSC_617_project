@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./Styles/VideoTemplate.css"; 
 
 function VideoTemplate({title, description,channelName, imageLink, videoId}) {
 

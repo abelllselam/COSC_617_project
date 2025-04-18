@@ -10,14 +10,12 @@ function App() {
   return (
     <Router>
       <div className="App">
-        {/* <div className="sidebar">
-          <Sidebar />
-        </div> */}
         <div className="main">
           <div className="header">
             <Header />
           </div>
           <div className="content">
+            {/* <Upload_Button /> */}
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/video/:videoId" element={<VideoPlayer />} />
