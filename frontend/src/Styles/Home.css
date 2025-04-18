@@ -1,0 +1,17 @@
+.video-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center; /* or space-between / flex-start depending on layout */
+    padding: 1rem;
+    cursor: pointer;
+  }
+  
+  .variable-box {
+    flex: 1 1 400px; /* Grows/shrinks and starts at 300px wide */
+    max-width: 500px;
+    min-width: 250px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin: 0.5rem;
+  }
+  

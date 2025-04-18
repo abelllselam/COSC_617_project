@@ -5,7 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { Schema, model } from 'mongoose';
 import { ConnectMongo } from './mongodb.js';
-import { dropboxUpload } from './dropboxUpload.js'
+import { dropboxUploadVideo, dropboxUploadImage } from './dropboxUpload.js'
 
 const app = express();
 
@@ -26,6 +26,7 @@ const videoSchema = new Schema({
     mimetype: String,
     streamingLink: String,
     videoId: String,
+    imageLink: String,
     // image: {
     //   url: String,
     //   altText: String
@@ -49,58 +50,29 @@ app.use(express.static(path.join(__dirname, '../frontend/dist')));
 //----------------------POST-------------------------------
 
 // Endpoint to save video details
-app.post('/upload-video', async (req, res) => {
-    const { title, description, videoPath, owner, url } = req.body;
-    const likes = 0;
-    const dislikes = 0;
-    const altText = title
-    if (!title || !description || !videoPath) {
-        return res.status(400).json({ message: 'Missing required fields' });
-    }
+app.post('/store-video', upload.fields([{name: 'file', maxCount: 1},{name: 'poster', maxCount:1}]), async (req, res) => {
+  const uploadImage = async(req) =>{
+    const { buffer, originalname } = req.files['poster']?.[0]
+    const { status, imageLink } =  await dropboxUploadImage(originalname, buffer)
+    return { status, imageLink } 
+  }
 
-    // Generate a random videoId string
-    const videoId = Math.random().toString(36).substring(2, 15);
-
-    try {
-        // Create a new video document using the Video model
-        const newVideo = new Video({
-          title,
-          description,
-          videoPath,
-          likes,
-          dislikes,
-          owner,
-          mimetype,
-          streamingLink,
-          videoId,
-          image: {
-            url,
-            altText
-          }
-        });
-    
-        //If there are no errors save in database
-        await newVideo.save();
-        return res.status(201).json({ message: 'Video saved successfully', video: newVideo });
-    } 
-    catch (error) {
-        return res.status(500).json({ message: 'Error saving video', error });
-    }
-});
-
-// Endpoint to save video details
-app.post('/store-video', upload.single('file'), async (req, res) => {
-  const {mimetype, buffer, originalname} = req.file
-  const contents = JSON.parse(req.body.contents)
-  const { title, description, channelName } = contents
-  const likes = 0;
-  const dislikes = 0;
-  console.log(req.file, req.file.buffer, originalname)
-  const { status, videoId, message, error, streamingLink } = await dropboxUpload(originalname, buffer)
-  console.log(status, videoId, message, error, streamingLink)
-  if(status === 200){
-    try {
-      // Create a new video document using the Video model
+  const uploadVideo = async(req) =>{
+    const { mimetype, buffer, originalname } = req.files['file']?.[0]
+    const { videoId, message, error, streamingLink } = await dropboxUploadVideo(originalname, buffer)
+    const { status, imageLink } = await uploadImage(req, originalname)
+    return { status, videoId, message, error, streamingLink, imageLink, mimetype }
+  }
+  try {
+      const contents = JSON.parse(req.body.contents)
+      const { title, description, channelName } = contents
+      const likes = 0;
+      const dislikes = 0;
+      const {status, videoId, mimetype, streamingLink, imageLink} = await uploadVideo(req)
+      if (status !== 200) {
+        return res.status(500).json({ error: 'Error uploading poster to Dropbox' });
+      }
+      // Create a new video document Susing the Video model
       const newVideo = new Video({
         title,
         description,
@@ -110,10 +82,7 @@ app.post('/store-video', upload.single('file'), async (req, res) => {
         mimetype,
         streamingLink,
         videoId,
-        // image: {
-        //   url,
-        //   altText
-        // }
+        imageLink
       });
 
       //If there are no errors save in database
@@ -123,18 +92,6 @@ app.post('/store-video', upload.single('file'), async (req, res) => {
     catch (error) {
         return res.status(500).json({ message: 'Error saving video', error });
     }
-    //return res.status(results.status).json({ data: results.message, videoId: results.videoId });
-  }else{
-    return res.status(status).json({error: error})
-  }
-
-
-  // const { title, description, videoPath } = req.body;
-
-  // if (!title || !description || !videoPath) {
-  //     return res.status(400).json({ message: 'Missing required fields' });
-  // }
-
 });
 
 //----------------------GET-------------------------------

@@ -2,14 +2,14 @@ import axios from 'axios';
 import { getDropboxToken } from './dropboxTokenRefresh.js'
 
 
-const accessToken = await getDropboxToken();
 const dropboxUploadUrl = 'https://content.dropboxapi.com/2/files/upload';
 const dropboxLinkUrl = 'https://api.dropboxapi.com/2/sharing/create_shared_link_with_settings';
 
-export const dropboxUpload = async (fileName, fileBuffer) => {
+export const dropboxUploadVideo = async (fileName, fileBuffer) => {
+    const accessToken = await getDropboxToken();
     // Generate a random videoId string
     const videoId = Math.random().toString(36).substring(2, 15);
-    const filePath = `/TU_Video_App/${videoId}${fileName}`;
+    const filePath = `/TU_Video_App/Videos/${videoId}${fileName}`;
 
     const headers = {
         'Authorization': `Bearer ${accessToken}`,
@@ -65,4 +65,55 @@ export const dropboxUpload = async (fileName, fileBuffer) => {
         };
     }
 };
+export const dropboxUploadImage = async (fileName, fileBuffer) => {
+    const imageId = Math.random().toString(36).substring(2, 15);
+    const accessToken = await getDropboxToken(); // moved inside
 
+    const filePath = `/TU_Video_App/Images/${imageId}${fileName}`;
+
+    const headers = {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/octet-stream',
+        'Dropbox-API-Arg': JSON.stringify({
+            path: filePath,
+            mode: 'add',
+            autorename: false,
+            mute: true,
+        }),
+    };
+
+    try {
+        const uploadResponse = await axios.post(dropboxUploadUrl, fileBuffer, { headers });
+        console.log('Image uploaded:', uploadResponse.data);
+
+        const sharedLinkResponse = await axios.post(dropboxLinkUrl, {
+            path: filePath,
+            settings: {
+                requested_visibility: 'public',
+                audience: 'public',
+                access: 'viewer',
+            }
+        }, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        console.log(sharedLinkResponse.data)
+        const sharedLink = sharedLinkResponse.data.url;
+        const imageLink = sharedLink
+            .replace('www.dropbox.com', 'dl.dropboxusercontent.com')
+            .replace('?dl=0', '')
+            .replace('?dl=1', '');
+
+        return {
+            status: 200,
+            imageLink,
+        };
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        return {
+            status: 500,
+        };
+    }
+};

@@ -1,11 +1,16 @@
 import React ,{ useState, useEffect } from "react";
 import { getRequest } from './request.js'
 import VideoTemplate from './VideoTemplate'
+import VideoPlayer from './VideoPlayer'
+import Loading from './Loading';
+import './Styles/Home.css'
 
 
 const Home = () => {
     const [videos, setVideos] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [player, setVideoPlayer] = useState(false)
+    const [videoId, setVideoId] = useState(null)
 
     // Fetch videos from the server when the component mounts
     useEffect(() => {
@@ -26,57 +31,45 @@ const Home = () => {
         fetchVideos();
     }, []); 
 
-    if (loading) {
-        return <p>Loading...</p>;  // Show a loading message while waiting for the data
-    }
-
     const videoMapped = videos.map((current) =>{
         return (
-            <VideoTemplate 
-                title={current.title} 
-                description={current.description} 
-                streamingLink={current.streamingLink} 
-                key={current.videoId}  
-            />
+            
+            <div className="variable-box">
+                <VideoTemplate 
+                    title={current.title} 
+                    description={current.description}  
+                    channelName={current.channelName}
+                    imageLink = {current.imageLink}
+                    videoId={current.videoId} 
+                    setVideoPlayer = {setVideoPlayer}
+                    setVideoId = {setVideoId}
+                />
+            </div>
         )
     })
+
+    const homeScreen = () => {
+        if(player){
+            return (
+                <VideoPlayer videoId={videoId}/>
+            )
+        }else{
+            return(
+                <div className="video-container"> 
+                    {videoMapped}
+                </div>
+            )
+        }
+
+    }
+
+    if (loading) {
+        return <Loading />
+    }
     return (
         <>
-            {videoMapped}
+            {homeScreen()}
         </>
-        // <div className="video-container">
-        //   {/* Video Player */}
-        //   <div className="video-player">
-        //     <iframe
-        //       width="100%"
-        //       height="500"
-        //       src="https://www.youtube.com/embed/dQw4w9WgXcQ" // Example video (you can replace this with a dynamic URL)
-        //       title="YouTube video player"
-        //       frameBorder="0"
-        //       allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-        //       allowFullScreen
-        //     ></iframe>
-        //   </div>
-
-        //   {/* Video Details */}
-        //   <div className="video-details">
-        //     <h2 className="video-title">Video Title Goes Here</h2>
-        //     <p className="video-description">
-        //       This is a sample video description. You can add details about the video content here.
-        //     </p>
-        //     <div className="channel-info">
-        //       <img
-        //         src="https://www.example.com/path-to-channel-avatar.jpg" // Replace with actual channel image
-        //         alt="Channel Avatar"
-        //         className="channel-avatar"
-        //       />
-        //       <div className="channel-details">
-        //         <h3 className="channel-name">Channel Name</h3>
-        //         <p className="subscribers">1.5M Subscribers</p>
-        //       </div>
-        //     </div>
-        //   </div>
-        // </div>
     );
 }
 export default Home;

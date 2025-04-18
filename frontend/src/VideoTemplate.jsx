@@ -1,28 +1,19 @@
 import React from "react";
 import "./Styles/VideoTemplate.css";  // We will create the CSS file to style the container
 
-function VideoTemplate({title, description, streamingLink, key}) {
-  return (
-    <div className="video-container">
-      {/* Video Player */}
-      <div className="video-player">
-        <iframe
-          width="60%"
-          height="300"
-          src={streamingLink}
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
-      </div>
+function VideoTemplate({title, description,channelName, imageLink, videoId, setVideoPlayer, setVideoId}) {
 
-      {/* Video Details */}
-      <div className="video-details">
-        <h2 className="video-title">{title}</h2>
-        <p className="video-description">
-          {description}
-        </p>
+  const handleClick = () =>{
+    setVideoPlayer(true)
+    setVideoId(videoId)
+  } 
+  return (
+    <div class="card" style={{width: "100%"}} onClick={handleClick}>
+      <img class="card-img-top" src={imageLink} alt={title} />
+      <div class="card-body">
+        <h5 class="card-title">{title}</h5>
+        <p class="card-text"> {description}</p>
+        <p class="card-text"> {channelName}</p>
       </div>
     </div>
   );

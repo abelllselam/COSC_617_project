@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-import UploadPage from "./Upload/Upload_Page";
 import Home from "./Home";
 import Upload_Button from "./Upload/Upload_Button";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -11,15 +10,15 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <div className="sidebar">
+        {/* <div className="sidebar">
           <Sidebar />
-        </div>
+        </div> */}
         <div className="main">
           <div className="header">
           <Header />
           </div>
           <div className="content">
-            <Upload_Button />
+            {/* <Upload_Button /> */}
             <Home />
             {/* <VideoPlayer /> */}
             {/* <Routes>
