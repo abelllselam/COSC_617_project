@@ -3,10 +3,10 @@ import Sidebar from "./Sidebar";
 import Header from "./Header";
 import Home from "./Home";
 import Upload_Button from "./Upload/Upload_Button";
+import VideoPlayer from "./VideoPlayer";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import './Styles/App.css';
 function App() {
-
   return (
     <Router>
       <div className="App">
@@ -15,17 +15,14 @@ function App() {
         </div> */}
         <div className="main">
           <div className="header">
-          <Header />
+            <Header />
           </div>
           <div className="content">
-            {/* <Upload_Button /> */}
-            <Home />
-            {/* <VideoPlayer /> */}
-            {/* <Routes>
+            <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/course-catalog" element={<CourseCatalog />} />
-              <Route path="/graduation" element={<GraduationChecker />} />
-            </Routes> */}
+              <Route path="/video/:videoId" element={<VideoPlayer />} />
+              {/* Add other routes here */}
+            </Routes>
           </div>
         </div>
       </div>

@@ -1,11 +1,13 @@
 import React from "react";
-import "./Styles/VideoTemplate.css";  // We will create the CSS file to style the container
+import { useNavigate } from "react-router-dom";
+import "./Styles/VideoTemplate.css"; 
 
-function VideoTemplate({title, description,channelName, imageLink, videoId, setVideoPlayer, setVideoId}) {
+function VideoTemplate({title, description,channelName, imageLink, videoId}) {
+
+  const navigate = useNavigate()
 
   const handleClick = () =>{
-    setVideoPlayer(true)
-    setVideoId(videoId)
+    navigate(`/video/${videoId}`)
   } 
   return (
     <div class="card" style={{width: "100%"}} onClick={handleClick}>

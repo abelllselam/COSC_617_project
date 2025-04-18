@@ -39,8 +39,13 @@
     background-color: #caced1;
     
   }
-
-
+  .home{
+    width: 3%;
+    text-align: center; 
+    margin: auto; 
+    justify-content: center;
+    cursor: pointer;
+  }
   .icons{
     width: 15%;
     display: flex;

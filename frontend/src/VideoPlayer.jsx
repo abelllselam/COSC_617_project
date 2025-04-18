@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FaThumbsUp, FaThumbsDown, FaShare } from "react-icons/fa";
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Loading from './Loading';
 import './Styles/VideoPlayer.css'
 
-const VideoPlayer = (Id) => {
+const VideoPlayer = () => {
   const [data, setData] = useState({channelName: '', description: '', dislikes: '', imageLink: '', likes: '', streamingLink: '', title: ''});
   const [loading, setLoading] = useState(true);
-  const {videoId} = Id
+  const { videoId } = useParams();
   // Make the GET request using axios
   useEffect(() => {
     axios.get(`http://localhost:8080/video/${videoId}`)

@@ -1,7 +1,6 @@
 import React ,{ useState, useEffect } from "react";
 import { getRequest } from './request.js'
 import VideoTemplate from './VideoTemplate'
-import VideoPlayer from './VideoPlayer'
 import Loading from './Loading';
 import './Styles/Home.css'
 
@@ -9,8 +8,6 @@ import './Styles/Home.css'
 const Home = () => {
     const [videos, setVideos] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [player, setVideoPlayer] = useState(false)
-    const [videoId, setVideoId] = useState(null)
 
     // Fetch videos from the server when the component mounts
     useEffect(() => {
@@ -41,34 +38,19 @@ const Home = () => {
                     channelName={current.channelName}
                     imageLink = {current.imageLink}
                     videoId={current.videoId} 
-                    setVideoPlayer = {setVideoPlayer}
-                    setVideoId = {setVideoId}
                 />
             </div>
         )
     })
-
-    const homeScreen = () => {
-        if(player){
-            return (
-                <VideoPlayer videoId={videoId}/>
-            )
-        }else{
-            return(
-                <div className="video-container"> 
-                    {videoMapped}
-                </div>
-            )
-        }
-
-    }
 
     if (loading) {
         return <Loading />
     }
     return (
         <>
-            {homeScreen()}
+             <div className="video-container"> 
+                    {videoMapped}
+                </div>
         </>
     );
 }
