@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar, Container, Form, Button, Offcanvas, Modal } from 'react-bootstrap';
 import { RxHamburgerMenu } from 'react-icons/rx';
 import { FaSearch } from 'react-icons/fa';
@@ -7,12 +7,19 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import logo from './Images/logo2.png';
 import Sidebar from "./Sidebar";
 import { auth } from "./firebase";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+  updateProfile
+} from "firebase/auth";
 
 function Header() {
   const [show, setShow] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -34,6 +41,7 @@ function Header() {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    const name = e.target.name.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
     const confirmPassword = e.target.confirmPassword.value;
@@ -45,6 +53,11 @@ function Header() {
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+      const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random`;
+      await updateProfile(auth.currentUser, {
+        displayName: name,
+        photoURL: avatarUrl,
+      });
       alert("Account created successfully!");
       handleSignUpClose();
     } catch (error) {
@@ -65,6 +78,22 @@ function Header() {
       alert(error.message);
     }
   };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      alert("Error signing out: " + error.message);
+    }
+  };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user || null);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <>
@@ -129,14 +158,40 @@ function Header() {
             </Button>
           </Form>
 
-          <div className="d-flex align-items-center justify-content-center">
-            <Button
-              variant="link"
-              onClick={handleSignInShow}
-              style={{ color: "white", textDecoration: 'none' }}
-            >
-              Sign In
-            </Button>
+          <div className="d-flex align-items-center justify-content-center gap-2">
+            {currentUser ? (
+              <>
+                <div className="d-flex align-items-center" style={{ color: "white" }}>
+                  <img
+                    src={currentUser.photoURL}
+                    alt="Profile"
+                    style={{
+                      width: "32px",
+                      height: "32px",
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                      marginRight: "8px",
+                    }}
+                  />
+                  {currentUser.displayName}
+                </div>
+                <Button
+                  variant="link"
+                  onClick={handleSignOut}
+                  style={{ color: "white", textDecoration: 'none' }}
+                >
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <Button
+                variant="link"
+                onClick={handleSignInShow}
+                style={{ color: "white", textDecoration: 'none' }}
+              >
+                Sign In
+              </Button>
+            )}
           </div>
         </Container>
       </Navbar>
