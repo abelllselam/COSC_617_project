@@ -2,6 +2,7 @@ import React from "react";
 import { Offcanvas } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from "react-router-dom";
+import { FaHome, FaVideo, FaHistory, FaThumbsUp, FaCommentAlt } from 'react-icons/fa';
 import "./Styles/Sidebar.css";
 
 function Sidebar() {
@@ -13,12 +14,26 @@ function Sidebar() {
       <hr className="custom-hr"/>
       <Offcanvas.Body>
         <div className="SideBar">
-        <p>Explore</p>
+          <p className="sidebar-section-title">Explore</p>
           <ul>
             <nav>
-              <Link to="/Favorites">Favorites</Link>
-              <Link to="/Popular"> Popular</Link>
-              <Link to="/Liked_Videos"> Liked Videos</Link>
+            <div className="sidebar-links">
+                <Link to="./Home" className="sidebar-link">
+                  <FaHome /> <span classname="tab">Home</span>
+                </Link>
+                <Link to="/Subscriptions" className="sidebar-link">
+                  <FaVideo /> Subscriptions
+                </Link>
+                <Link to="/History" className="sidebar-link">
+                  <FaHistory /> History
+                </Link>
+                <Link to="/Liked_Videos" className="sidebar-link">
+                  <FaThumbsUp /> Liked Videos
+                </Link>
+                <Link to="/User_Comments_Page" className="sidebar-link">
+                  <FaCommentAlt /> Your Comments
+                </Link>
+                </div>
             </nav>
           </ul>
         </div>
