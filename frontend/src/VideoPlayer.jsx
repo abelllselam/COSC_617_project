@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FaThumbsUp, FaThumbsDown, FaShare } from "react-icons/fa";
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import { getRequest } from './request.js'
 import Loading from './Loading';
 import './Styles/VideoPlayer.css'
 
@@ -11,16 +11,19 @@ const VideoPlayer = () => {
   const { videoId } = useParams();
   // Make the GET request using axios
   useEffect(() => {
-    axios.get(`http://localhost:8080/video/${videoId}`)
-      .then(response => {
-        setData(response.data.video);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setLoading(false);
-      });
-  }, []);
+    const fetchVideosPlayer = async () => {
+        const endpointURL = `/video/${videoId}`;
+        try {
+            const videoReturned = await getRequest(endpointURL);
+            setData(videoReturned.data.video);  
+            setLoading(false);  
+        } catch (error) {
+            console.error('Error fetching videos:', error);
+            setLoading(false);  
+        }
+    };
+    fetchVideosPlayer();
+  }, []); 
 
   if (loading || !data) {
     return <Loading />;

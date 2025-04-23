@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import Sidebar from "./Sidebar";
 import Header from "./Header";
 import Home from "./Home";
 import Upload_Button from "./Upload/Upload_Button";
 import VideoPlayer from "./VideoPlayer";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; 
+
 import './Styles/App.css';
 
 function App() {

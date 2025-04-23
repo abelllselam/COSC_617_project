@@ -12,13 +12,10 @@ const Home = () => {
     // Fetch videos from the server when the component mounts
     useEffect(() => {
         const fetchVideos = async () => {
-            const endpoint = 'http://localhost:8080/video-all';
-            const headers = {
-                'Content-Type': 'application/json',
-            };
+            const endpointURL = '/video-all';
             try {
-                const videosReturned = await getRequest(endpoint, headers);
-                setVideos(videosReturned.video);  
+                const videosReturned = await getRequest(endpointURL);
+                setVideos(videosReturned.data.video);  
                 setLoading(false);  
             } catch (error) {
                 console.error('Error fetching videos:', error);

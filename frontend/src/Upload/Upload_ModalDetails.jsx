@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { postRequest } from '../request.js'
 import Loading from '../Loading';
 import '../Styles/Upload_Modal.css';
-import axios from 'axios';
 
 const Upload_ModalDetails = ({ file, closeEverything }) => {
   const [title, setTitle] = useState('');
@@ -97,14 +97,22 @@ const Upload_ModalDetails = ({ file, closeEverything }) => {
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/store-video', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-
+      useEffect(() => {
+        const setVideos = async () => {
+          const endpointURL = '/store-video';
+          const headers = { 'Content-Type': 'multipart/form-data' }
+          const videosReturned = await postRequest(endpointURL, headers, formData);
+          setVideos(videosReturned.data.video);  
+          setLoading(false);  
+          console.error('Error fetching videos:', error);
+        };
+        setVideos();
+      }, []); 
       console.log('File uploaded successfully:', response.data);
       closeEverything();
     } catch (error) {
       console.error('Error uploading file:', error);
+      setLoading(false); 
     } finally {
       setIsUploading(false);
     }

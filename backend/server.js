@@ -6,6 +6,14 @@ import { fileURLToPath } from 'url';
 import { Schema, model } from 'mongoose';
 import { ConnectMongo } from './mongodb.js';
 import { dropboxUploadVideo, dropboxUploadImage } from './dropboxUpload.js'
+import { auth } from "./firebase.js";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+  updateProfile
+} from "firebase/auth";
 
 const app = express();
 
@@ -131,7 +139,7 @@ app.get('/video-all/', async (req, res) => {
 });
 
 //API port
-const port = 8080;
-app.listen(port, () => {
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0', () => {
   console.log(`Server running on port ${port}`);
 });
