@@ -3,8 +3,6 @@ import { getFirestore } from "@firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
-console.log("test", import.meta.env.VITE_API_KEY)
-
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
   authDomain: "tu-video-app.firebaseapp.com",
