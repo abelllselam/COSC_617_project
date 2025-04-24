@@ -36,6 +36,7 @@ const Home = () => {
                     channelName={current.channelName}
                     imageLink = {current.imageLink}
                     videoId={current.videoId} 
+                    channelImage={current.channelImage}
                 />
             </div>
         )

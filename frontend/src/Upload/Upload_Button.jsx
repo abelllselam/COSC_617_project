@@ -32,7 +32,7 @@ const Upload_Button = () => {
         </div>
       </div>
       {isUploading ? (
-        <Loading />
+          <Loading />
       ) : (
         <>
           <Upload_Modal showDetails={showDetails} showFirstPage={showFirstPage} handleDetailsShow={handleDetailsShow} handleDetailsClose={handleDetailsClose} handleFirstPageClose={handleFirstPageClose} setIsUploading={setIsUploading} />

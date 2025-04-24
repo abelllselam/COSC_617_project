@@ -23,6 +23,7 @@ const videoSchema = new Schema({
     likes: Number,
     dislikes: Number,
     channelName: String,
+    channelImage: String,
     mimetype: String,
     streamingLink: String,
     videoId: String,
@@ -65,7 +66,7 @@ app.post('/store-video', upload.fields([{name: 'file', maxCount: 1},{name: 'post
   }
   try {
       const contents = JSON.parse(req.body.contents)
-      const { title, description, channelName } = contents
+      const { title, description, channelName, channelImage } = contents
       const likes = 0;
       const dislikes = 0;
       const {status, videoId, mimetype, streamingLink, imageLink} = await uploadVideo(req)
@@ -79,6 +80,7 @@ app.post('/store-video', upload.fields([{name: 'file', maxCount: 1},{name: 'post
         likes,
         dislikes,
         channelName,
+        channelImage,
         mimetype,
         streamingLink,
         videoId,

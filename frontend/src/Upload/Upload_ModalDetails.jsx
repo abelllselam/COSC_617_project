@@ -90,12 +90,14 @@ const Upload_ModalDetails = ({ file, handleDetailsClose, setIsUploading }) => {
     }
 
     const channelName = currentUser.displayName;
+    const channelImage = currentUser.photoURL;
     setIsUploading(true);
     const formData = new FormData();
     const contents = {
       title,
       description,
       channelName,
+      channelImage,
       posterImage
     };
 
