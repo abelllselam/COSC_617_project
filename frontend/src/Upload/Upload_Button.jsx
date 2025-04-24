@@ -1,54 +1,45 @@
 import React, { useState } from 'react';
 import Upload_Modal from './Upload_Modal'
-
-  // const handleFileChange = async (event) => {
-  //   const file = event.target.files[0];
-  //   const formData = new FormData();
-    
-  //   if (file) {
-  //     formData.append('file', file);
-  //     formData.append('contents', title, description, owner);
-  //     console.log("File: ", file)
-  //     try {
-  //       const response = await axios.post('http://localhost:8080/store-video', formData, {
-  //         headers: {
-  //           'Content-Type': 'multipart/form-data',
-  //         },
-  //       });
-        
-  //       console.log('File uploaded successfully:', response.data);
-  //     } catch (error) {
-  //       console.error('Error uploading file:', error);
-  //     }
-  //   }
-  // };
+import { FaPlus } from "react-icons/fa";
+import '../Styles/Upload_Button.css'
+import Loading from '../Loading';
 
 const Upload_Button = () => {
-  const [showModal, setShowModal] = useState(false);
-
-    const openModal = (event) => {
-      //console.log(event.target.files[0]);
-      setShowModal(true);
+    const [showDetails, setShowDetails] = useState(false);
+    const [showFirstPage, setShowFirstPage] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
+    const handleDetailsClose = () => setShowDetails(false);
+    const handleFirstPageClose = () => setShowFirstPage(false);
+    const handleFirstPageShow = () => {
+      setShowDetails(false);
+      setShowFirstPage(true);
     };
-
-    const handleCloseModal = () => {
-      setShowModal(false);
+    const handleDetailsShow = () => {
+      setShowDetails(true);
+      setShowFirstPage(false);
     };
 
     return (
-      <div className="mb-3">
-        <label className="btn btn-primary">
-          Upload File
-          <input
-            type="button"
-            onClick={openModal}
-            className="d-none"
-          />
-        </label>
-
-        {/* Modal */}
-        <Upload_Modal show={showModal} onClose={handleCloseModal} />
+      <>
+        <div className="upload-button-wrapper">
+        <div className="upload-button-group">
+          <button className="upload-button c" onClick={handleFirstPageShow} aria-label="Upload video">
+            <FaPlus className="icon"/>
+          </button>
+      
+          {/* Tooltip */}
+          <div className="tooltip">Upload Video</div>
+        </div>
       </div>
+      {isUploading ? (
+        <Loading />
+      ) : (
+        <>
+          <Upload_Modal showDetails={showDetails} showFirstPage={showFirstPage} handleDetailsShow={handleDetailsShow} handleDetailsClose={handleDetailsClose} handleFirstPageClose={handleFirstPageClose} setIsUploading={setIsUploading} />
+          </>
+      )}
+      
+    </>
     );
 };
 

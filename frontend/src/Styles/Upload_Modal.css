@@ -1,27 +1,8 @@
-.containerDiv{
-    position: fixed;        
-    top: 50%;               
-    left: 50%;              
-    transform: translate(-50%, -50%);  
-    transition: opacity 0.9s ease-in-out;
-    border: 4px solid black;
-    background-color: #eeede8;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50vh;                     
-    z-index: 1050; 
-    border-radius: 15px;
-}
 
 .uploadDiv{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     text-align: center;
     cursor: pointer;
-    width: 30%
+    width: 100%;
 }
 
 .uploadButton{
@@ -35,7 +16,6 @@
     left: 15px;      
 }       
 
-
 /* Upload_ModalDetails Page */
 
 /* General container styling */
@@ -43,16 +23,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100%;
     background-color: #f7f7f7;
     width: 100%;
+    border: 2px;
   }
   
   /* Modal content container */
   .modal-content {
     display: flex;
     background-color: white;
-    padding: 30px;
+    padding: 15px;
     border-radius: 8px;
     width: 100%;
   }
@@ -66,17 +47,13 @@
   .heading {
     font-weight: bold;
     font-size: 1.8rem;
-    margin-bottom: 20px;
-  }
-  
-  .input-group {
-    margin-bottom: 20px;
+ 
   }
   
   .input-label {
     font-weight: 600;
     display: block;
-    margin-bottom: 8px;
+
   }
   
   .input-field {
@@ -103,8 +80,9 @@
   }
   
   .thumbnail {
-    max-width: 250px;
+    max-width: 350px;
     margin-bottom: 15px;
+    border: 2px solid black;
   }
   
   .file-info {
@@ -119,20 +97,19 @@
   /* Upload button */
   .upload-btn {
     text-align: right;
-    margin-top: 20px;
+
   }
   
-  .upload-button {
-    background-color: #007bff;
-    color: white;
-    padding: 12px 25px;
+  .upload-button1 {
+    background-color: #eecf22;
+    color: black;
+    height: 40px;
+    width: 90px;
     font-weight: bold;
     border: none;
-    border-radius: 25px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    border: 2px solid black;
+
   }
   
-  .upload-button:hover {
-    background-color: #0056b3;
-  }

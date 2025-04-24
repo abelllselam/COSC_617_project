@@ -3,6 +3,7 @@ import { getRequest } from './request.js'
 import VideoTemplate from './VideoTemplate'
 import Loading from './Loading';
 import './Styles/Home.css'
+import { FaRegStar } from "react-icons/fa";
 
 
 const Home = () => {
@@ -41,10 +42,21 @@ const Home = () => {
     })
 
     if (loading) {
-        return <Loading />
+        return (
+            <div style={{
+                height: '500px',
+                margin: 'auto',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',}}
+            >
+                <Loading />
+            </div>
+        )
     }
     return (
         <>
+            <div className="popularText"><FaRegStar style={{marginTop: '-10px', padding: '3px', marginRight: '4px'}}/>Popular</div>
              <div className="video-container"> 
                     {videoMapped}
                 </div>

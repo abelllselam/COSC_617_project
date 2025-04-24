@@ -9,5 +9,4 @@ services:
       DropBox_App_Key: ${DropBox_App_Key}
       DropBox_App_Secret: ${DropBox_App_Secret}
       DropBox_Refresh_Token: ${DropBox_Refresh_Token}
-      VITE_API_KEY: ${VITE_API_KEY}
 

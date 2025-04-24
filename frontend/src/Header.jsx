@@ -14,6 +14,7 @@ import {
   signOut,
   updateProfile
 } from "firebase/auth";
+import Upload_Button from "./Upload/Upload_Button";
 
 function Header() {
   const [show, setShow] = useState(false);
@@ -38,6 +39,8 @@ function Header() {
   const handleClick = () => {
     navigate(`/`);
   };
+
+  console.log("nier", currentUser)
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -162,6 +165,7 @@ function Header() {
             {currentUser ? (
               <>
                 <div className="d-flex align-items-center" style={{ color: "white" }}>
+                <Upload_Button />
                   <img
                     src={currentUser.photoURL}
                     alt="Profile"

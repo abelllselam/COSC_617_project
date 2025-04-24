@@ -49,7 +49,6 @@ app.use(express.static(path.join(__dirname, '../frontend/dist')));
 //----------------------------------API REQUEST------------------------------------------------
 //----------------------POST-------------------------------
 
-console.log(process.env)
 // Endpoint to save video details
 app.post('/store-video', upload.fields([{name: 'file', maxCount: 1},{name: 'poster', maxCount:1}]), async (req, res) => {
   const uploadImage = async(req) =>{

@@ -4,7 +4,7 @@ import './Styles/loading.css'
 const Loading = () => {
   return (
     <>
-        <div class="loader"></div>
+        <div class="loader" style={{margin: '0 auto', position: 'relative'}}></div>
     </>
   );
 };

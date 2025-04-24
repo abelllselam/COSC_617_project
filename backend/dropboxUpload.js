@@ -99,7 +99,6 @@ export const dropboxUploadImage = async (fileName, fileBuffer) => {
                 'Content-Type': 'application/json',
             },
         });
-        console.log(sharedLinkResponse.data)
         const sharedLink = sharedLinkResponse.data.url;
         const imageLink = sharedLink
             .replace('www.dropbox.com', 'dl.dropboxusercontent.com')
