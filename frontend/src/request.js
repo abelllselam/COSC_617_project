@@ -4,6 +4,7 @@ const baseURL = window.location.hostname === 'localhost'
   ? 'http://localhost:8080' 
   : window.location.origin;
 console.log(baseURL);
+
 // Example of a GET request
 export const getRequest = async (endpointURL) => {
   try {

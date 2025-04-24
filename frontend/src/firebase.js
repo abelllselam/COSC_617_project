@@ -4,7 +4,7 @@ import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_API_KEY,
+  apiKey: "AIzaSyDvuu5pGNYmVwv0JaMihIZabipGuhuvfys",
   authDomain: "tu-video-app.firebaseapp.com",
   projectId: "tu-video-app",
   storageBucket: "tu-video-app.appspot.com",
