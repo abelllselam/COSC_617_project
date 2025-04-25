@@ -1,0 +1,34 @@
+.video-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: white;
+    padding: 5px;
+    border-radius: 12px;
+    max-width: 500px;
+    cursor: pointer;
+  }
+  
+  .thumbnail {
+    width: 50%;
+    object-fit: cover;
+    margin-top: 10px;
+    border-radius: 5%;
+  }
+  
+  .video-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .video-title {
+    font-size: 1rem;
+    font-weight: 600;
+
+  }
+  
+  .channel-name {
+    font-size: 0.8rem;
+    color: #bbb;
+  }
+  

@@ -4,8 +4,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from "react-router-dom";
 import { FaHome, FaVideo, FaHistory, FaThumbsUp, FaCommentAlt } from 'react-icons/fa';
 import "./Styles/Sidebar.css";
+import { useNavigate } from "react-router-dom";
 
 function Sidebar() {
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/`);
+  };
+
   return (
     <>
       <Offcanvas.Header closeButton>
@@ -18,8 +26,8 @@ function Sidebar() {
           <ul>
             <nav>
             <div className="sidebar-links">
-                <Link to="./Home" className="sidebar-link">
-                  <FaHome /> <span classname="tab">Home</span>
+                <Link to="/" className="sidebar-link">
+                  <FaHome /> <span className="tab">Home</span>
                 </Link>
                 <Link to="/Subscriptions" className="sidebar-link">
                   <FaVideo /> Subscriptions

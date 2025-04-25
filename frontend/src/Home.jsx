@@ -43,17 +43,7 @@ const Home = () => {
     })
 
     if (loading) {
-        return (
-            <div style={{
-                height: '500px',
-                margin: 'auto',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',}}
-            >
-                <Loading />
-            </div>
-        )
+        return <Loading />
     }
     return (
         <>
