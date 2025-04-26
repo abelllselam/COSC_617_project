@@ -2,38 +2,38 @@
   color: white;
   display: flex;
   flex-direction: column;
-  padding: 20px; /* Add padding around sidebar */
+  padding: 20px; 
 }
 
 .SideBar p {
   font-size: 1.5em;
-  margin-bottom: 20px; /* Space after the title */
+  margin-bottom: 20px;
 }
 
 .SideBar h2 {
   color: white;
   border: 2px solid red;
-  padding: 10px; /* Added padding for better spacing */
+  padding: 10px;
 }
 
 .SideBar nav a {
   color: white;
   text-decoration: none;
-  margin-top: 15px; /* Added more spacing between links */
+  margin-top: 15px; 
   display: flex;
   align-items: center;
   font-size: 1.2em;
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effect */
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .SideBar nav a:hover {
   background-color: #444;
   border-radius: 5px;
-  transform: scale(1.05); /* Slight scale effect on hover */
+  transform: scale(1.05); 
 }
 
 .SideBar nav a .sidebar-icon {
-  margin-right: 10px; /* Space between icon and text */
+  margin-right: 10px; 
 }
 
 .offcanvas .btn-close {
@@ -45,5 +45,5 @@
   border: none;          
   height: 2px;          
   background-color: white; 
-  margin: 15px 0; /* Added top and bottom margin */
+  margin: 15px 0;
 }

@@ -15,11 +15,6 @@
 
 .video-wrapper {
   width: 100%;
-  background: #000;
-  margin: 5, 5, 5, 5;
-  margin: auto;
-  border: 1px solid black;
-  border-radius: 25px;
 }
 
 .video-element {
@@ -73,8 +68,6 @@
   object-fit: cover;
   border-radius: 60%;
 }
-
-
 .action-buttons {
   display: flex;
   gap: 1rem;
@@ -83,7 +76,6 @@
   margin-left: auto; 
  
 }
-
 .action-btn {
   display: flex;
   align-items: center;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import './Styles/Header.css'
 import { Navbar, Container, Form, Button, Offcanvas, Modal } from 'react-bootstrap';
 import { RxHamburgerMenu } from 'react-icons/rx';
 import { FaSearch } from 'react-icons/fa';
@@ -33,6 +34,8 @@ function Header() {
     setShowSignIn(false);
     setShowSignUp(true);
   };
+
+  const [searchValue, setSearchValue] = useState('');
 
   const navigate = useNavigate();
 
@@ -100,48 +103,41 @@ function Header() {
 
   return (
     <>
-      <Navbar expand="lg" style={{ marginTop: '-52px' }}>
-        <Container fluid className="d-flex align-items-center justify-content-between">
-          <div className="d-flex align-items-center gap-3">
+      <Navbar expand="lg" className="py-1" style={{ backgroundColor: "#121212", height: "60px" }}>
+        <Container fluid className="d-flex align-items-center justify-content-between" style={{ height: "100%" }}>
+          <div className="d-flex align-items-center gap-2">
             <Button
-              variant="primary"
+              variant="link"
               onClick={handleShow}
-              style={{
-                textDecoration: 'none',
-                background: 'none',
-                border: 'none',
-                boxShadow: 'none',
-              }}
+              className="p-0 d-flex align-items-center"
+              style={{ background: 'none', border: 'none', color: 'white' }}
             >
-              <RxHamburgerMenu size={30} style={{ color: 'white' }} />
+              <RxHamburgerMenu size={24} />
             </Button>
+
             <img
               src={logo}
               alt="Logo"
-              style={{
-                width: '12vw',
-                cursor: 'pointer',
-                marginTop: '12px',
-                marginLeft: '20px',
-              }}
               onClick={handleClick}
+              style={{
+                width: '120px',
+                cursor: 'pointer',
+              }}
             />
           </div>
-
-          <Form
-            className="d-flex align-items-center position-relative"
-            role="search"
-            style={{ marginLeft: '-80px' }}
-          >
+          <div className="position-relative flex-grow-1 mx-3" style={{ maxWidth: "500px" }}>
             <Form.Control
               type="search"
               placeholder="Search"
               aria-label="Search"
-              className="pe-5"
+              className="search-input"
+              onChange={(e) => setSearchValue(e.target.value)}
+              value={searchValue}
               style={{
-                width: '50vw',
-                borderRadius: '25px',
-                paddingRight: '40px',
+                width: "100%",
+                borderRadius: "25px",
+                paddingLeft: "40px", 
+                height: "38px",
               }}
             />
             <Button
@@ -149,40 +145,43 @@ function Header() {
               variant="link"
               style={{
                 position: 'absolute',
-                right: '4px',
-                bottom: '4px',
+                left: '10px',  
+                top: '45%',
+                transform: 'translateY(-50%)',
                 background: 'none',
                 border: 'none',
-                color: 'black',
+                color: searchValue ? 'black' : 'gray',
                 zIndex: '2',
+                cursor: searchValue ? 'pointer' : 'default',
+                padding: 0,
               }}
             >
               <FaSearch size={18} />
             </Button>
-          </Form>
-
-          <div className="d-flex align-items-center justify-content-center gap-2">
+          </div>
+          <div className="d-flex align-items-center gap-2">
             {currentUser ? (
               <>
-                <div className="d-flex align-items-center" style={{ color: "white" }}>
                 <Upload_Button />
+                <div className="d-flex align-items-center text-white">
                   <img
                     src={currentUser.photoURL}
                     alt="Profile"
                     style={{
-                      width: "32px",
-                      height: "32px",
+                      width: "30px",
+                      height: "30px",
                       borderRadius: "50%",
                       objectFit: "cover",
-                      marginRight: "8px",
+                      marginRight: "6px",
                     }}
                   />
-                  {currentUser.displayName}
+                  <span style={{ fontSize: "0.9rem" }}>{currentUser.displayName}</span>
                 </div>
                 <Button
                   variant="link"
                   onClick={handleSignOut}
-                  style={{ color: "white", textDecoration: 'none' }}
+                  className="text-white text-decoration-none p-0"
+                  style={{ fontSize: "0.9rem" }}
                 >
                   Sign Out
                 </Button>
@@ -191,15 +190,16 @@ function Header() {
               <Button
                 variant="link"
                 onClick={handleSignInShow}
-                style={{ color: "white", textDecoration: 'none' }}
+                className="text-white text-decoration-none p-0"
+                style={{ fontSize: "0.9rem" }}
               >
                 Sign In
               </Button>
             )}
           </div>
+
         </Container>
       </Navbar>
-
       <Offcanvas
         show={show}
         onHide={handleClose}

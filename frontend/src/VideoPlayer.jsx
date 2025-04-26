@@ -24,7 +24,7 @@ const VideoPlayer = () => {
       try {
         const videoReturned = await getRequest(endpointURL);
         setData(videoReturned.data.video);
-        setVideoDataLoaded(true); // ✅ fix here
+        setVideoDataLoaded(true);
       } catch (error) {
         console.error('Error fetching video:', error);
       }
@@ -39,7 +39,7 @@ const VideoPlayer = () => {
       try {
         const videosReturned = await getRequest(endpointURL);
         setVideos(videosReturned.data.video);
-        setAllVideosLoaded(true); // ✅ fix here
+        setAllVideosLoaded(true);
       } catch (error) {
         console.error('Error fetching videos:', error);
       }
@@ -78,6 +78,7 @@ const VideoPlayer = () => {
             src={streamingLink}
             controls
             poster={imageLink}
+            autoPlay='true'
           >
             Your browser does not support the video tag.
           </video>

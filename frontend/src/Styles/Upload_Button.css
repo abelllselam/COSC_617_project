@@ -51,7 +51,7 @@
   .upload-button.c::after {
     background: repeating-conic-gradient(
       from calc(var(--border-angle, 0deg) * -1),
-      #161616 60deg
+      #121212 60deg
     );
   }
   
