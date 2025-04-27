@@ -190,6 +190,21 @@ app.get("/video-all/", async (req, res) => {
   }
 });
 
+//Search get endpoint
+app.get("/search", async (req, res) => {
+  const { query } = req.query;
+
+  try {
+    const videos = await Video.find({
+      title: { $regex: query, $options: "i" },
+    });
+
+    return res.status(200).json({ videos });
+  } catch (error) {
+    return res.status(500).json({ message: "Error searching videos", error });
+  }
+});
+
 //API port
 const port = process.env.PORT || 8080;
 app.listen(port, "0.0.0.0", () => {
