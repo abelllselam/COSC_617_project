@@ -15,8 +15,8 @@ const VideoRecommended = ({title, channelName, imageLink, videoId, likes}) => {
         <img src={imageLink} alt="Channel Thumbnail" class="thumbnail" />
         <div class="video-info">
           <h4 class="video-title">{title}</h4>
-          <span class="channel-name">{channelName}</span>
-          <h6 class="channel-name">{likes} Likes</h6>
+          <span class="channel-name-video">{channelName}</span>
+          <h6 class="channel-name-video">{likes} Likes</h6>
         </div>
       </div>
 
