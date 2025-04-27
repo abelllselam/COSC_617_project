@@ -1,0 +1,12 @@
+services:
+  app:
+    build: .
+    image: bwilfong122/video_app:latest
+    ports:
+      - "8080:8080"
+    environment:
+      DB_PASSWORD: ${DB_PASSWORD}
+      DropBox_App_Key: ${DropBox_App_Key}
+      DropBox_App_Secret: ${DropBox_App_Secret}
+      DropBox_Refresh_Token: ${DropBox_Refresh_Token}
+

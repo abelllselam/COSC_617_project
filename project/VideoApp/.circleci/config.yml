@@ -1,0 +1,41 @@
+version: 2.1
+
+jobs:
+  docker:
+    docker:
+      - image: cimg/base:current
+        environment:
+          DB_PASSWORD: "$DB_PASSWORD"
+    steps:
+      - checkout
+
+      - setup_remote_docker:
+          docker_layer_caching: true
+
+      - run:
+          name: Install Docker Compose
+          command: |
+            curl -SL https://github.com/docker/compose/releases/download/v2.24.6/docker-compose-$(uname -s)-$(uname -m) -o docker-compose
+            chmod +x docker-compose
+            sudo mv docker-compose /usr/local/bin/docker-compose
+
+      - run:
+          name: Login to Docker Hub
+          command: |
+            echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+      - run:
+          name: Build and Push Docker Image using Docker Compose
+          command: |
+            docker-compose -f docker-compose.yml build
+            docker-compose push
+
+      - run:
+          name: Trigger Render Deployment
+          command: |
+            curl -X POST "$RENDER_DEPLOY_HOOK"
+
+workflows:
+  docker-workflow:
+    jobs:
+      - docker
