@@ -1,0 +1,114 @@
+
+.uploadDiv{
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+}
+
+.uploadButton{
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.closeButton{
+    position: absolute;
+    top: 15px;               
+    left: 15px;      
+}       
+
+/* Upload_ModalDetails Page */
+
+/* General container styling */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    border: 2px;
+  }
+  
+  /* Modal content container */
+  .modal-content {
+    display: flex;
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    width: 100%;
+  }
+  
+  /* Left side */
+  .left-side {
+    flex: 1;
+    padding-right: 30px;
+  }
+  
+  .heading {
+    font-weight: bold;
+    font-size: 1.8rem;
+ 
+  }
+  
+  .input-label {
+    font-weight: 600;
+    display: block;
+
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+  
+  .channel-info {
+    margin-top: 20px;
+  }
+  
+  .channel-name {
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  
+  /* Right side */
+  .right-side {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .thumbnail {
+    max-width: 350px;
+    margin-bottom: 15px;
+    border: 2px solid black;
+  }
+  
+  .file-info {
+    font-weight: 600;
+  }
+  
+  .file-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+  
+  /* Upload button */
+  .upload-btn {
+    text-align: right;
+
+  }
+  
+  .upload-button1 {
+    background-color: #eecf22;
+    color: black;
+    height: 40px;
+    width: 90px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 2px solid black;
+
+  }
+  
