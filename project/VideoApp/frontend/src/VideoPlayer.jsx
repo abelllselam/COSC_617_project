@@ -29,8 +29,27 @@ const VideoPlayer = () => {
   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user || null);
+
+      if (user) {
+        try {
+          const res = await postRequest(
+            "/user-sync",
+            { headers: { "Content-Type": "application/json" } },
+            {
+              uid: user.uid,
+              email: user.email,
+              name: user.displayName || "Anonymous", // Optional
+              image: user.photoURL || "", // Optional
+            }
+          );
+
+          console.log("User synced with backend:", res.data);
+        } catch (err) {
+          console.error("Failed to sync user with backend:", err.message);
+        }
+      }
     });
 
     return () => unsubscribe();
