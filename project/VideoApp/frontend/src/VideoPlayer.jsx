@@ -8,14 +8,15 @@ import VideoRecommended from "./VideoRecommended.jsx";
 import Comment from "./Comment.jsx";
 import { auth } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { postRequest } from "./request.js";
 
 const VideoPlayer = () => {
   const [data, setData] = useState({
     channelName: "",
     description: "",
-    dislikes: "",
+    dislikes: 0,
     imageLink: "",
-    likes: "",
+    likes: 0,
     streamingLink: "",
     title: "",
     channelImage: "",
@@ -125,11 +126,61 @@ const VideoPlayer = () => {
             </div>
           </div>
           <div className="action-buttons">
-            <button className="action-btn">
-              <FaThumbsUp /> {likes}
+            <button
+              className="action-btn"
+              onClick={async () => {
+                if (!currentUser) {
+                  alert("Please sign in to like this video.");
+                  return;
+                }
+
+                try {
+                  console.log("Sending uid:", currentUser?.uid);
+
+                  const res = await postRequest(
+                    `/video/${videoId}/like`,
+                    { headers: { "Content-Type": "application/json" } },
+                    { uid: currentUser.uid }
+                  );
+                  console.log("LIKE response from backend:", res.data);
+                  setData((prevData) => ({
+                    ...prevData,
+                    likes: res.data.likes,
+                    dislikes: res.data.dislikes,
+                  }));
+                } catch (error) {
+                  console.error("Error liking video:", error);
+                }
+              }}
+            >
+              <FaThumbsUp /> {data.likes}
             </button>
-            <button className="action-btn">
-              <FaThumbsDown /> {dislikes}
+            <button
+              className="action-btn"
+              onClick={async () => {
+                if (!currentUser) {
+                  alert("Please sign in to dislike this video.");
+                  return;
+                }
+
+                try {
+                  const res = await postRequest(
+                    `/video/${videoId}/dislike`,
+                    { headers: { "Content-Type": "application/json" } },
+                    { uid: currentUser.uid }
+                  );
+                  console.log("DISLIKE response from backend:", res.data);
+                  setData((prevData) => ({
+                    ...prevData,
+                    dislikes: res.data.dislikes,
+                    likes: res.data.likes,
+                  }));
+                } catch (error) {
+                  console.error("Error disliking video:", error);
+                }
+              }}
+            >
+              <FaThumbsDown /> {data.dislikes}
             </button>
           </div>
           <div className="description-box">
@@ -137,10 +188,7 @@ const VideoPlayer = () => {
             <div className="video-description">{description}</div>
           </div>
         </div>
-        <Comment
-          videoId={videoId}
-          user={currentUser?.displayName || "Anonymous"}
-        />
+        <Comment videoId={videoId} user={currentUser} />
 
         {/* <div className="comments-section">
           <h3 className="comments-heading">Comments</h3>

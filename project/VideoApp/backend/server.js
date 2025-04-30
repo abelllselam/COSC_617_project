@@ -7,6 +7,7 @@ import { fileURLToPath } from "url";
 import { Schema, model } from "mongoose";
 import { ConnectMongo } from "./mongodb.js";
 import { dropboxUploadVideo, dropboxUploadImage } from "./dropboxUpload.js";
+import User from "./User.js";
 
 dotenv.config();
 const app = express();
@@ -22,8 +23,8 @@ ConnectMongo();
 const videoSchema = new Schema({
   title: String,
   description: String,
-  likes: Number,
-  dislikes: Number,
+  likes: { type: Number, default: 0 },
+  dislikes: { type: Number, default: 0 },
   channelName: String,
   channelImage: String,
   mimetype: String,
@@ -59,6 +60,134 @@ app.use(express.static(path.join(__dirname, "../frontend/dist")));
 //----------------------POST-------------------------------
 
 // Endpoint to save video details
+
+//When the user logs in via firebase, the frontend sends their info to /user-sync and it creates the mongoDB user record(if missing), to avoid duplicate user creation it checks by uid.
+app.post("/user-sync", async (req, res) => {
+  const { uid, email, displayName, photoURL } = req.body;
+
+  if (!uid || !email) {
+    return res.status(400).json({ message: "UID and email are required" });
+  }
+
+  try {
+    // Check if user already exists
+    let user = await User.findOne({ uid });
+
+    if (!user) {
+      // Create user if they don't exist
+      user = new User({
+        uid,
+        email,
+        displayName,
+        photoURL,
+        likedVideos: [],
+        dislikedVideos: [],
+      });
+      await user.save();
+    }
+
+    return res.status(200).json({ message: "User synced", user });
+  } catch (error) {
+    return res.status(500).json({ message: "Error syncing user", error });
+  }
+});
+
+//like a video
+app.post("/video/:videoId/like", async (req, res) => {
+  const { videoId } = req.params;
+  const { uid } = req.body;
+  console.log("LIKE route hit", videoId, req.body);
+
+  try {
+    const user = await User.findOne({ uid });
+    console.log("Fetched user:", user);
+    const video = await Video.findOne({ videoId });
+    console.log("Fetched video:", video);
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!video) return res.status(404).json({ message: "Video not found" });
+
+    const alreadyLiked = user.likedVideos.includes(videoId);
+    const alreadyDisliked = user.dislikedVideos.includes(videoId);
+
+    if (!alreadyLiked) {
+      user.likedVideos.push(videoId);
+      video.likes += 1;
+    }
+
+    if (alreadyDisliked) {
+      user.dislikedVideos = user.dislikedVideos.filter((id) => id !== videoId);
+      video.dislikes -= 1;
+    }
+
+    console.log("Before save (LIKE):");
+    console.log("video.likes =", video.likes);
+    console.log("video.dislikes =", video.dislikes);
+    console.log("user.likedVideos =", user.likedVideos);
+    console.log("user.dislikedVideos =", user.dislikedVideos);
+
+    await user.save();
+    await video.save();
+
+    console.log(
+      "AFTER SAVE video.likes:",
+      video.likes,
+      "video.dislikes:",
+      video.dislikes
+    );
+
+    return res.status(200).json({
+      message: "Video liked",
+      likes: video.likes,
+      dislikes: video.dislikes,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Error liking video", error });
+  }
+});
+
+//Dislike videos
+app.post("/video/:videoId/dislike", async (req, res) => {
+  const { videoId } = req.params;
+  const { uid } = req.body;
+  console.log("DISLIKE route hit", videoId, req.body);
+
+  try {
+    const user = await User.findOne({ uid });
+    const video = await Video.findOne({ videoId });
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!video) return res.status(404).json({ message: "Video not found" });
+
+    const alreadyDisliked = user.dislikedVideos.includes(videoId);
+    const alreadyLiked = user.likedVideos.includes(videoId);
+
+    if (!alreadyDisliked) {
+      console.log("👍 This video was not already liked — adding like");
+      user.dislikedVideos.push(videoId);
+      video.dislikes += 1;
+    }
+
+    if (alreadyLiked) {
+      user.likedVideos = user.likedVideos.filter((id) => id !== videoId);
+      video.likes -= 1;
+    }
+
+    await user.save();
+    await video.save();
+    console.log("Saved video.likes =", video.likes);
+    return res
+      .status(200)
+      .json({
+        message: "Video disliked",
+        dislikes: video.dislikes,
+        likes: video.likes,
+      });
+  } catch (error) {
+    return res.status(500).json({ message: "Error disliking video", error });
+  }
+});
+
 app.post(
   "/store-video",
   upload.fields([
@@ -129,7 +258,7 @@ app.post(
 // Add a comment to a video
 app.post("/video/:videoId/comments", async (req, res) => {
   const { videoId } = req.params;
-  const { text, user } = req.body; // user can be hardcoded for now
+  const { text, user } = req.body;
 
   try {
     const video = await Video.findOne({ videoId });
@@ -140,7 +269,7 @@ app.post("/video/:videoId/comments", async (req, res) => {
 
     const newComment = {
       text,
-      user,
+      user: user.displayName || user.email || "Anonymous",
       timestamp: Date.now(),
     };
 

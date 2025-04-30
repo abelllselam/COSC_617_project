@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
+import { getRequest } from "./request";
 import VideoTemplate from "./VideoTemplate";
 
 function SearchResults() {
@@ -12,9 +12,7 @@ function SearchResults() {
   useEffect(() => {
     const fetchSearchResults = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:8080/search?query=${query}`
-        );
+        const res = await getRequest(`/search?query=${query}`);
         setVideos(res.data.videos);
       } catch (error) {
         console.error("Error fetching search results:", error);
